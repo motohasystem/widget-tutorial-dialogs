@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tutorial Widget - デモ</title>
+  <link rel="stylesheet" href="tutorial-widget.css">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.6;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      color: #333;
+      border-bottom: 3px solid #007bff;
+      padding-bottom: 10px;
+    }
+    h2 {
+      color: #555;
+      margin-top: 30px;
+    }
+    .code-block {
+      background-color: #f8f9fa;
+      border-left: 4px solid #007bff;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+    pre {
+      margin: 0;
+      font-family: "Courier New", monospace;
+      font-size: 14px;
+    }
+    .button {
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 10px 10px 10px 0;
+      transition: background-color 0.2s;
+    }
+    .button:hover {
+      background-color: #0056b3;
+    }
+    .button.secondary {
+      background-color: #6c757d;
+    }
+    .button.secondary:hover {
+      background-color: #545b62;
+    }
+    .feature-list {
+      background-color: #e7f3ff;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+    .feature-list ul {
+      margin: 0;
+    }
+    .note {
+      background-color: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Tutorial Widget</h1>
+    <p>Webアプリケーションに簡単に組み込めるチュートリアルウィジェットです。初回アクセス時にモーダルダイアログを表示し、複数ページのガイドを提供できます。</p>
+
+    <div class="feature-list">
+      <h3>主な機能</h3>
+      <ul>
+        <li>初回アクセス時のみモーダルダイアログを自動表示</li>
+        <li>複数ページのチュートリアルコンテンツに対応</li>
+        <li>JSONファイルで簡単にページ設定を管理</li>
+        <li>「次回は表示しない」機能（LocalStorage使用）</li>
+        <li>レスポンシブデザイン対応</li>
+        <li>カスタマイズ可能なスタイル</li>
+      </ul>
+    </div>
+
+    <h2>デモ</h2>
+    <p>以下のボタンをクリックして、チュートリアルウィジェットを体験してください。</p>
+    <button class="button" onclick="showTutorial()">チュートリアルを表示</button>
+    <button class="button secondary" onclick="resetTutorial()">表示状態をリセット</button>
+
+    <h2>使用方法</h2>
+
+    <h3>1. ファイルの配置</h3>
+    <p>以下のファイルをプロジェクトに配置します：</p>
+    <div class="code-block">
+      <pre>your-project/
+├── tutorial-widget.js
+├── tutorial-widget.css
+├── tutorial-config.json
+└── pages/
+    ├── page1.html
+    ├── page2.html
+    └── page3.html</pre>
+    </div>
+
+    <h3>2. HTMLに読み込み</h3>
+    <p>CSSとJavaScriptを読み込みます：</p>
+    <div class="code-block">
+      <pre>&lt;!-- CSSの読み込み --&gt;
+&lt;link rel="stylesheet" href="tutorial-widget.css"&gt;
+
+&lt;!-- JavaScriptの読み込み --&gt;
+&lt;script src="tutorial-widget.js"&gt;&lt;/script&gt;</pre>
+    </div>
+
+    <h3>3. ウィジェットの初期化</h3>
+    <p>ページ読み込み後にウィジェットを初期化します：</p>
+    <div class="code-block">
+      <pre>&lt;script&gt;
+  document.addEventListener('DOMContentLoaded', async () => {
+    const widget = new TutorialWidget({
+      configUrl: 'tutorial-config.json',
+      storageKey: 'my-app-tutorial-dismissed' // オプション
+    });
+    await widget.init();
+  });
+&lt;/script&gt;</pre>
+    </div>
+
+    <h3>4. 設定ファイルの編集</h3>
+    <p><code>tutorial-config.json</code>で表示するページを設定します：</p>
+    <div class="code-block">
+      <pre>{
+  "pages": [
+    {
+      "url": "pages/page1.html"
+    },
+    {
+      "url": "pages/page2.html"
+    },
+    {
+      "url": "pages/page3.html"
+    }
+  ]
+}</pre>
+    </div>
+
+    <h3>5. ページコンテンツの作成</h3>
+    <p>各ページのHTMLファイルには、表示したい内容を記述します。通常のHTMLタグが使用できます：</p>
+    <div class="code-block">
+      <pre>&lt;div&gt;
+  &lt;h2&gt;ページタイトル&lt;/h2&gt;
+  &lt;p&gt;説明文...&lt;/p&gt;
+  &lt;img src="image.png" alt="説明画像"&gt;
+&lt;/div&gt;</pre>
+    </div>
+
+    <div class="note">
+      <strong>注意:</strong> ページコンテンツのHTMLファイルは、完全なHTML文書ではなく、モーダル内に挿入されるHTMLフラグメントとして作成してください。<code>&lt;html&gt;</code>、<code>&lt;head&gt;</code>、<code>&lt;body&gt;</code>タグは不要です。
+    </div>
+
+    <h2>カスタマイズ</h2>
+    <p><code>tutorial-widget.css</code>を編集することで、モーダルのデザインをカスタマイズできます。主なクラス：</p>
+    <ul>
+      <li><code>.tutorial-widget-overlay</code> - オーバーレイ背景</li>
+      <li><code>.tutorial-widget-modal</code> - モーダル本体</li>
+      <li><code>.tutorial-widget-content</code> - コンテンツエリア</li>
+      <li><code>.tutorial-widget-nav-btn</code> - ナビゲーションボタン</li>
+    </ul>
+
+    <h2>リセット機能</h2>
+    <p>開発中やテスト時に表示状態をリセットしたい場合は、以下のコードを実行します：</p>
+    <div class="code-block">
+      <pre>TutorialWidget.reset('my-app-tutorial-dismissed');</pre>
+    </div>
+
+    <h2>ライセンス</h2>
+    <p>このウィジェットは自由に使用、改変、配布できます。</p>
+  </div>
+
+  <script src="tutorial-widget.js"></script>
+  <script>
+    // チュートリアルウィジェットの初期化
+    document.addEventListener('DOMContentLoaded', async () => {
+      const widget = new TutorialWidget({
+        configUrl: 'tutorial-config.json',
+        storageKey: 'tutorial-widget-demo-dismissed'
+      });
+      await widget.init();
+    });
+
+    // デモ用の関数
+    function showTutorial() {
+      const widget = new TutorialWidget({
+        configUrl: 'tutorial-config.json',
+        storageKey: 'tutorial-widget-demo-dismissed'
+      });
+      widget.init();
+    }
+
+    function resetTutorial() {
+      TutorialWidget.reset('tutorial-widget-demo-dismissed');
+      alert('表示状態をリセットしました。ページを再読み込みすると、チュートリアルが再度表示されます。');
+    }
+  </script>
+</body>
+</html>
