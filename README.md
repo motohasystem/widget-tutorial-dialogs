@@ -6,6 +6,7 @@ Webアプリケーションに簡単に組み込めるチュートリアルウ�
 
 - ✨ **初回アクセス時の自動表示** - LocalStorageを使用して初回訪問者のみに表示
 - 📄 **複数ページ対応** - JSONファイルで簡単にページ設定を管理
+- 🎯 **要素ハイライト機能** - 特定のDOM要素を強調表示し、吹き出し形式で説明を表示
 - 🎨 **レスポンシブデザイン** - モバイル・タブレット・デスクトップに対応
 - ⚙️ **カスタマイズ可能** - CSSで自由にデザインを変更可能
 - 🚀 **軽量・依存関係なし** - 外部ライブラリ不要、純粋なJavaScript
@@ -83,12 +84,30 @@ your-project/
       "url": "pages/page1.html"
     },
     {
-      "url": "pages/page2.html"
+      "url": "pages/page2.html",
+      "highlightId": "target-element-id"
     },
     {
       "url": "pages/page3.html"
     }
   ]
+}
+```
+
+#### ハイライト機能の使用
+
+`highlightId` パラメータを指定すると、そのページでは指定されたDOM要素がハイライトされます：
+
+- ハイライトされた要素は青い枠線で強調表示されます
+- それ以外の領域は自動的にグレーアウトされます
+- チュートリアル内容は吹き出し形式で表示されます
+- 吹き出しの矢印の向きは自動的に最適な位置に調整されます
+
+**例:**
+```json
+{
+  "url": "pages/button-tutorial.html",
+  "highlightId": "submit-button"
 }
 ```
 
@@ -168,8 +187,10 @@ TutorialWidget.reset('my-app-tutorial-dismissed');
 
 | クラス名 | 説明 |
 |---------|------|
-| `.tutorial-widget-overlay` | オーバーレイ背景 |
+| `.tutorial-widget-overlay` | オーバーレイ背景（モーダルモード） |
 | `.tutorial-widget-modal` | モーダル本体 |
+| `.tutorial-widget-tooltip` | ツールチップ形式のモーダル（ハイライトモード） |
+| `.tutorial-widget-highlight-box` | ハイライトボックス |
 | `.tutorial-widget-close` | 閉じるボタン |
 | `.tutorial-widget-content` | コンテンツエリア |
 | `.tutorial-widget-footer` | フッターエリア |

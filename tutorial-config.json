@@ -4,7 +4,8 @@
       "url": "pages/page1.html"
     },
     {
-      "url": "pages/page2.html"
+      "url": "pages/page2.html",
+      "highlightId": "demo-button"
     },
     {
       "url": "pages/page3.html"
